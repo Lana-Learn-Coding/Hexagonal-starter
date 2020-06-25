@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 
 @Data
-public class AddNewUserCommand {
+public class CreateUserCommand {
     @NotBlank
     private String name;
 

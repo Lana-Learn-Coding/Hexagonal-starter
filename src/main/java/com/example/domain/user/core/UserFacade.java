@@ -1,38 +1,48 @@
 package com.example.domain.user.core;
 
-import com.example.domain.user.core.model.AddNewUserCommand;
-import com.example.domain.user.core.model.CheckIsUserExistCommand;
-import com.example.domain.user.core.model.DeleteUserCommand;
-import com.example.domain.user.core.model.User;
-import com.example.domain.user.core.ports.incoming.AddNewUser;
-import com.example.domain.user.core.ports.incoming.CheckIsUserExist;
-import com.example.domain.user.core.ports.incoming.DeleteUser;
+import com.example.domain.user.core.model.*;
+import com.example.domain.user.core.ports.incoming.*;
 import com.example.domain.user.core.ports.outgoing.UserDatabase;
 import com.example.domain.user.infrastructure.mapper.UserMapper;
+import lombok.AllArgsConstructor;
 
-import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
-public class UserFacade implements AddNewUser, CheckIsUserExist, DeleteUser {
-    @Inject
-    UserDatabase userDatabase;
-
-    @Inject
-    UserMapper userMapper;
+@AllArgsConstructor
+public class UserFacade implements CreateUser, CheckUserExist, DeleteUser, UpdateUser, FindOneUser, FindAllUser {
+    private final UserDatabase userDatabase;
+    private final UserMapper userMapper;
 
     @Override
-    public Optional<User> handle(AddNewUserCommand addNewUserCommand) {
-        User user = userMapper.fromAddNewUserCommand(addNewUserCommand);
+    public Optional<User> handle(CreateUserCommand createUserCommand) {
+        User user = userMapper.fromCreateUserCommand(createUserCommand);
         return userDatabase.save(user);
     }
 
     @Override
-    public boolean handle(CheckIsUserExistCommand checkIsUserExistCommand) {
-        return userDatabase.exist(checkIsUserExistCommand.getUserId());
+    public boolean handle(CheckUserExistCommand checkUserExistCommand) {
+        return userDatabase.exist(checkUserExistCommand.getUserId());
     }
 
     @Override
     public void handle(DeleteUserCommand deleteUserCommand) {
         userDatabase.delete(deleteUserCommand.getUserId());
+    }
+
+    @Override
+    public Optional<User> handle(UpdateUserCommand updateUserCommand) {
+        User user = userMapper.fromUpdateUserCommand(updateUserCommand);
+        return userDatabase.save(user);
+    }
+
+    @Override
+    public List<User> handle(FindAllUserCommand findAllUserCommand) {
+        return userDatabase.findAll();
+    }
+
+    @Override
+    public Optional<User> handle(FindOneUserCommand findOneUserCommand) {
+        return userDatabase.findOne(findOneUserCommand.getUserId());
     }
 }

@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class CheckIsUserExistCommand {
+public class FindOneUserCommand {
     private UUID userId;
 
-    public void setUserId(String userId) {
-        this.userId = UUID.fromString(userId);
+    public FindOneUserCommand(UUID userId) {
+        this.userId = userId;
     }
 }

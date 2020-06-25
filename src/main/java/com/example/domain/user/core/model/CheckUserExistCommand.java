@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class DeleteUserCommand {
+public class CheckUserExistCommand {
     private UUID userId;
 
     public void setUserId(UUID userId) {
