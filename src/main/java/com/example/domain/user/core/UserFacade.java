@@ -6,10 +6,12 @@ import com.example.domain.user.core.ports.outgoing.UserDatabase;
 import com.example.domain.user.infrastructure.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+@ApplicationScoped
 public class UserFacade implements CreateUser, CheckUserExist, DeleteUser, UpdateUser, FindOneUser, FindAllUser {
     private final UserDatabase userDatabase;
     private final UserMapper userMapper;

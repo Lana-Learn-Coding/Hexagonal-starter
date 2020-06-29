@@ -2,8 +2,9 @@ package com.example.domain.user.infrastructure;
 
 import com.example.domain.user.core.model.User;
 import com.example.domain.user.core.ports.outgoing.UserDatabase;
+import lombok.AllArgsConstructor;
 
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -11,9 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
+@ApplicationScoped
 public class UserDatabaseAdapter implements UserDatabase {
-    @Inject
-    EntityManager em;
+    private final EntityManager em;
 
     public Optional<User> findOne(UUID id) {
         User user = em.find(User.class, id);
